@@ -1,27 +1,19 @@
 import 'package:faker/faker.dart';
 
-import '../../domain/entitites/expenses_entity.dart';
+import '../../domain/entitites/institution_entity.dart';
 
-class ExpenseMapper {
-  static ExpenseEntity fromMap(Map<String, dynamic> map) {
-    return ExpenseEntity(
-      id: map['id'],
-      description: map['description'],
-      amount: map['amount'].toDouble(),
-      day: DateTime.parse(map['expense_date']),
-      latitude: map['latitude'],
-      longitude: map['longitude'],
+class InstitutionMapper {
+  static InstitutionEntity fromMap(Map<String, dynamic> map) {
+    return InstitutionEntity(
+      key: map['chave'],
+      value: map['valor'],
     );
   }
 
-  static ExpenseEntity fake() {
-    return ExpenseEntity(
-      id: faker.randomGenerator.string(7),
-      amount: faker.randomGenerator.decimal(),
-      description: faker.lorem.sentence(),
-      day: faker.date.dateTime(),
-      latitude: faker.randomGenerator.numberOfLength(8).toString(),
-      longitude: faker.randomGenerator.numberOfLength(8).toString(),
+  static InstitutionEntity fake() {
+    return InstitutionEntity(
+      key: faker.randomGenerator.string(5),
+      value: faker.randomGenerator.string(5),
     );
   }
 }

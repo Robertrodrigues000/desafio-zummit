@@ -1,20 +1,21 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
-import 'package:zummit/presenter/pages/form/widget/app_form_field.dart';
+import 'package:zummit/domain/entitites/institution_entity.dart';
+import 'package:zummit/domain/entitites/insurance_entity.dart';
+import 'package:zummit/presenter/pages/form/widget/currency_input_formatter.dart';
 
 import '../../../core/app_controller.dart';
 import '../../../core/theme/app_text.dart';
-import '../../../domain/entitites/expenses_entity.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/tab_title_widget.dart';
 import 'form_controller.dart';
 
 class FormPage extends StatefulWidget {
   final Function? addExpense;
-  final ExpenseEntity? expense;
+  final InstitutionEntity? expense;
   const FormPage({super.key, this.addExpense, this.expense});
 
   @override
@@ -23,7 +24,7 @@ class FormPage extends StatefulWidget {
 
 class _FormPageState extends AppController<FormPage, FormController> {
   @override
-  FormController createController() => FormController(expense: widget.expense);
+  FormController createController() => FormController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,10 +48,16 @@ class _FormPageState extends AppController<FormPage, FormController> {
                   key: controller.formKey,
                   child: Column(
                     children: [
-                      AppFormField(
+                      TextFormField(
                         controller: controller.valueCtl,
-                        labelText: "Valor do emprestimo",
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          CurrencyInputFormatter(),
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: "Valor do emprestimo",
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Favor adicionar o valor';
@@ -58,27 +65,35 @@ class _FormPageState extends AppController<FormPage, FormController> {
                           return null;
                         },
                       ),
-                      MultiSelectDialogField(
-                        buttonText: const Text('Instituição'),
-                        items: controller.mockedList
-                            .map((e) => MultiSelectItem(e, e))
-                            .toList(),
-                        listType: MultiSelectListType.CHIP,
-                        onConfirm: (values) {
-                          // _selectedAnimals = values;
-                        },
-                      ),
+                      ValueListenableBuilder<List<InstitutionEntity>?>(
+                          valueListenable: controller.institutionListListenable,
+                          builder: (context, institutions, _) {
+                            return MultiSelectDialogField(
+                              buttonText: const Text('Instituição'),
+                              items: institutions!
+                                  .map((e) => MultiSelectItem(e, e.value))
+                                  .toList(),
+                              listType: MultiSelectListType.CHIP,
+                              onConfirm: (values) {
+                                // _selectedAnimals = values;
+                              },
+                            );
+                          }),
                       const SizedBox(height: 5),
-                      MultiSelectDialogField(
-                        buttonText: const Text('Convênio'),
-                        items: controller.mockedList
-                            .map((e) => MultiSelectItem(e, e))
-                            .toList(),
-                        listType: MultiSelectListType.CHIP,
-                        onConfirm: (values) {
-                          // _selectedAnimals = values;
-                        },
-                      ),
+                      ValueListenableBuilder<List<InsuranceEntity>?>(
+                          valueListenable: controller.insuranceListListenable,
+                          builder: (context, insurances, _) {
+                            return MultiSelectDialogField(
+                              buttonText: const Text('Convênio'),
+                              items: insurances!
+                                  .map((e) => MultiSelectItem(e, e.value))
+                                  .toList(),
+                              listType: MultiSelectListType.CHIP,
+                              onConfirm: (values) {
+                                // _selectedAnimals = values;
+                              },
+                            );
+                          }),
                       const SizedBox(height: 5),
                       DropdownButtonFormField<String>(
                         isExpanded: true,
@@ -101,7 +116,7 @@ class _FormPageState extends AppController<FormPage, FormController> {
                         height: 200,
                       ),
                       AppButton(
-                        onPressed: () async => controller.addDataExpese(),
+                        onPressed: () {},
                         width: 1000,
                         height: 50,
                         title: "Simular",

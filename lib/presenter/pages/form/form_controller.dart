@@ -1,50 +1,50 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:zummit/domain/entitites/institution_entity.dart';
+import 'package:zummit/domain/entitites/insurance_entity.dart';
+import 'package:zummit/domain/usecases/get_institutions_usecase.dart';
 
-import '../../../domain/entitites/expenses_entity.dart';
+import '../../widgets/snackbar_widget.dart';
+
 
 class FormController extends ChangeNotifier {
-  final ExpenseEntity? _expense;
+   final _getInstitutionsUsecase = Modular.get<GetInstitutionsUsecase>();
+  // final _editExpenseUsecase = Modular.get<GetInstitutionsUsecase>();
 
-  final expensesListListenable = ValueNotifier<ExpenseEntity?>(null);
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final institutionListListenable =
+      ValueNotifier<List<InstitutionEntity>>([]);
+  final insuranceListListenable = ValueNotifier<List<InsuranceEntity>>([]);
   final fileListenable = ValueNotifier<File?>(null);
   final formKey = GlobalKey<FormState>();
-  final List mockedList = ["1", "2", "3", "4"];
-  List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-  List<String> installmentsList = <String>["36", "48", "60", "72", "84"];
+  final List<String> installmentsList = <String>["36", "48", "60", "72", "84"];
 
   TextEditingController dateCtl = TextEditingController();
   TextEditingController descriptionCtl = TextEditingController();
   TextEditingController valueCtl = TextEditingController();
-  DateTime? date = DateTime(1900);
 
-  FormController({
-    ExpenseEntity? expense,
-  }) : _expense = expense {
+  FormController() {
     _init();
   }
 
   void _init() {
-    if (_expense != null) {
-      dateCtl.text = DateFormat("dd/MM/yyyy").format(_expense!.day);
-      descriptionCtl.text = _expense!.description;
-      valueCtl.text = _expense!.amount.toString();
+   _getInstitutionList();
+  }
+
+ Future<void> _getInstitutionList() async {
+    var response = await _getInstitutionsUsecase();
+
+    if (response.isRight) {
+      institutionListListenable.value = response.right;
+      institutionListListenable.notifyListeners();
+    } else {
+      SnackbarHelper.error(
+        message:
+            'Erro ao carregar as informações, favor tentar novamente mais tarde.',
+        context: scaffoldKey.currentContext!,
+      );
     }
   }
-
-  Future datePicker({required context}) async {
-    FocusScope.of(context).requestFocus(new FocusNode());
-
-    date = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2100));
-
-    dateCtl.text = DateFormat("dd/MM/yyyy").format(date!);
-  }
-
-  void addDataExpese() async {}
 }

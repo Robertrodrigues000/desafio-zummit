@@ -1,8 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import '../domain/usecases/add_expense_usecase.dart';
-import '../domain/usecases/delete_expense_usecase.dart';
-import '../domain/usecases/edit_expense_usecase.dart';
-import '../domain/usecases/get_expense_list_usecase.dart';
+import '../domain/usecases/get_institutions_usecase.dart';
 import '../external/datasource/datasource.dart';
 import '../domain/repositories/repository.dart';
 import '../infra/datasource/datasource.dart';
@@ -19,16 +16,7 @@ class AppModule extends Module {
           (i) => Repository(datasource: i.get()),
         ),
         Bind.lazySingleton(
-          (i) => AddExpenseUsecase(repository: i.get()),
-        ),
-        Bind.lazySingleton(
-          (i) => EditExpenseUsecase(repository: i.get()),
-        ),
-        Bind.lazySingleton(
-          (i) => DeleteExpenseUsecase(repository: i.get()),
-        ),
-        Bind.lazySingleton(
-          (i) => GetExpenseListUsecase(repository: i.get()),
+          (i) => GetInstitutionsUsecase(repository: i.get()),
         ),
       ];
 
