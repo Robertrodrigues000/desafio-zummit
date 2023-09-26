@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import '../domain/usecases/get_institutions_usecase.dart';
+import '../domain/usecases/get_insurances_usecase.dart';
 import '../external/datasource/datasource.dart';
 import '../domain/repositories/repository.dart';
 import '../infra/datasource/datasource.dart';
@@ -17,6 +18,9 @@ class AppModule extends Module {
         ),
         Bind.lazySingleton(
           (i) => GetInstitutionsUsecase(repository: i.get()),
+        ),
+        Bind.lazySingleton(
+          (i) => GetInsurancesUsecase(repository: i.get()),
         ),
       ];
 

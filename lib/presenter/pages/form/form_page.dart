@@ -65,35 +65,38 @@ class _FormPageState extends AppController<FormPage, FormController> {
                           return null;
                         },
                       ),
+                      const SizedBox(height: 5),
                       ValueListenableBuilder<List<InstitutionEntity>?>(
-                          valueListenable: controller.institutionListListenable,
-                          builder: (context, institutions, _) {
-                            return MultiSelectDialogField(
-                              buttonText: const Text('Instituição'),
-                              items: institutions!
-                                  .map((e) => MultiSelectItem(e, e.value))
-                                  .toList(),
-                              listType: MultiSelectListType.CHIP,
-                              onConfirm: (values) {
-                                // _selectedAnimals = values;
-                              },
-                            );
-                          }),
+                        valueListenable: controller.institutionListListenable,
+                        builder: (context, institutions, _) {
+                          return MultiSelectDialogField(
+                            buttonText: const Text('Instituição'),
+                            items: institutions!
+                                .map((e) => MultiSelectItem(e, e.value))
+                                .toList(),
+                            listType: MultiSelectListType.CHIP,
+                            onConfirm: (values) {
+                              // _selectedAnimals = values;
+                            },
+                          );
+                        },
+                      ),
                       const SizedBox(height: 5),
                       ValueListenableBuilder<List<InsuranceEntity>?>(
-                          valueListenable: controller.insuranceListListenable,
-                          builder: (context, insurances, _) {
-                            return MultiSelectDialogField(
-                              buttonText: const Text('Convênio'),
-                              items: insurances!
-                                  .map((e) => MultiSelectItem(e, e.value))
-                                  .toList(),
-                              listType: MultiSelectListType.CHIP,
-                              onConfirm: (values) {
-                                // _selectedAnimals = values;
-                              },
-                            );
-                          }),
+                        valueListenable: controller.insuranceListListenable,
+                        builder: (context, insurances, _) {
+                          return MultiSelectDialogField(
+                            buttonText: const Text('Convênio'),
+                            items: insurances!
+                                .map((e) => MultiSelectItem(e, e.value))
+                                .toList(),
+                            listType: MultiSelectListType.CHIP,
+                            onConfirm: (values) {
+                              // _selectedAnimals = values;
+                            },
+                          );
+                        },
+                      ),
                       const SizedBox(height: 5),
                       DropdownButtonFormField<String>(
                         isExpanded: true,
@@ -105,12 +108,14 @@ class _FormPageState extends AppController<FormPage, FormController> {
                         hint: const Text("Parcelas"),
                         onChanged: (String? value) {},
                         items: controller.installmentsList
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                            .map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          },
+                        ).toList(),
                       ),
                       const SizedBox(
                         height: 200,
