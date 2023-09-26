@@ -14,9 +14,9 @@ import '../../widgets/tab_title_widget.dart';
 import 'form_controller.dart';
 
 class FormPage extends StatefulWidget {
-  final Function? addExpense;
-  final InstitutionEntity? expense;
-  const FormPage({super.key, this.addExpense, this.expense});
+  const FormPage({
+    super.key,
+  });
 
   @override
   State<FormPage> createState() => _FormPageState();
@@ -76,7 +76,7 @@ class _FormPageState extends AppController<FormPage, FormController> {
                                 .toList(),
                             listType: MultiSelectListType.CHIP,
                             onConfirm: (values) {
-                              // _selectedAnimals = values;
+                              controller.institutionListenable.value = values;
                             },
                           );
                         },
@@ -92,13 +92,13 @@ class _FormPageState extends AppController<FormPage, FormController> {
                                 .toList(),
                             listType: MultiSelectListType.CHIP,
                             onConfirm: (values) {
-                              // _selectedAnimals = values;
+                              controller.insuranceListenable.value = values;
                             },
                           );
                         },
                       ),
                       const SizedBox(height: 5),
-                      DropdownButtonFormField<String>(
+                      DropdownButtonFormField<int>(
                         isExpanded: true,
                         icon: const Icon(Icons.arrow_downward),
                         elevation: 16,
@@ -106,13 +106,15 @@ class _FormPageState extends AppController<FormPage, FormController> {
                           contentPadding: EdgeInsets.only(right: 10, left: 10),
                         ),
                         hint: const Text("Parcelas"),
-                        onChanged: (String? value) {},
+                        onChanged: (int? value) {
+                          controller.installmentsListenable.value = value!;
+                        },
                         items: controller.installmentsList
-                            .map<DropdownMenuItem<String>>(
-                          (String value) {
-                            return DropdownMenuItem<String>(
+                            .map<DropdownMenuItem<int>>(
+                          (int value) {
+                            return DropdownMenuItem<int>(
                               value: value,
-                              child: Text(value),
+                              child: Text(value.toString()),
                             );
                           },
                         ).toList(),
@@ -121,7 +123,7 @@ class _FormPageState extends AppController<FormPage, FormController> {
                         height: 200,
                       ),
                       AppButton(
-                        onPressed: () {},
+                        onPressed: () => controller.getSimulation(),
                         width: 1000,
                         height: 50,
                         title: "Simular",
