@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:zummit/presenter/pages/loan/loan_page.dart';
 import '../domain/usecases/get_institutions_usecase.dart';
 import '../domain/usecases/get_insurances_usecase.dart';
 import '../domain/usecases/get_simulation_usecase.dart';
@@ -33,6 +34,13 @@ class AppModule extends Module {
         ChildRoute(
           '/',
           child: (context, args) => const FormPage(),
+        ),
+        ChildRoute(
+          '/loan/',
+          child: (context, args) => LoanPage(
+            loanList: args.data['loanList'],
+            value: args.data['value'],
+          ),
         ),
       ];
 }

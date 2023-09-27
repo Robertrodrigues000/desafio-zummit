@@ -76,8 +76,10 @@ class FormController extends ChangeNotifier {
       );
 
       if (response.isRight) {
-        // insuranceListListenable.value = response.right;
-        // insuranceListListenable.notifyListeners();
+        Modular.to.pushNamed(
+          '/loan/',
+          arguments: {'loanList': response.right, 'value': _getNumber(valueCtl.text)},
+        );
       } else {
         SnackbarHelper.error(
           message:

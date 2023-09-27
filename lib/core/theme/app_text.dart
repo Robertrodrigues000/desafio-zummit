@@ -26,8 +26,15 @@ class AppText extends StatelessWidget {
 
   AppText.bodyText(this.text, {this.maxLine, super.key})
       : style = GoogleFonts.roboto(
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: FontWeight.w400,
+        );
+
+  AppText.bodyText2(this.text, {this.maxLine, super.key})
+      : style = GoogleFonts.roboto(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: AppColors.primary,
         );
 
   @override

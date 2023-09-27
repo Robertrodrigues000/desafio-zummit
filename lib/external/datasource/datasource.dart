@@ -68,8 +68,7 @@ class Datasource extends IDatasource {
       }),
     );
 
-    var data = jsonDecode(response.body);
-
+    Map data = jsonDecode(response.body);
     List<LoanInstitutionEntity> data2 = [];
 
     data.forEach((key, value) {

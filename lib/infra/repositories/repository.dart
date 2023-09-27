@@ -40,11 +40,11 @@ class Repository extends IRepository {
   }) async {
     try {
       List<LoanInstitutionEntity> response = await _datasource.simulation(
-    institutionList : institutionList,
-     insuranceList: insuranceList,
-     installment : installment,
-    value : value,
-  );
+        institutionList: institutionList,
+        insuranceList: insuranceList,
+        installment: installment,
+        value: value,
+      );
       return Right(response);
     } on DioException catch (e) {
       return Left(e);

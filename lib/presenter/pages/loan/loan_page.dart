@@ -1,36 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:zummit/core/theme/app_text.dart';
 
-import '../../../core/app_controller.dart';
-import '../../../domain/entitites/loan_entity.dart';
+import '../../../domain/entitites/loan_institution_entity.dart';
 import '../../widgets/tab_title_widget.dart';
-import 'loan_controller.dart';
 
-class LoanPage extends StatefulWidget {
-  final List<LoanEntity> loanList;
-  const LoanPage({super.key, required this.loanList});
+class LoanPage extends StatelessWidget {
+  final List<LoanInstitutionEntity> loanList;
+  final double value;
+  const LoanPage({
+    super.key,
+    required this.loanList,
+    required this.value,
+  });
 
-  @override
-  State<LoanPage> createState() => _LoanPageState();
-}
-
-class _LoanPageState extends AppController<LoanPage, LoanController> {
-  @override
-  LoanController createController() => LoanController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const TabTitleWidget(),
         centerTitle: true,
+        leading: const BackButton(color: Colors.black),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ...widget.loanList.map(
-              (item) => Text(item.insurance),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                AppText.sessionTitle("Opções de emprestimo"),
+                ...loanList.map(
+                  (item) => Column(
+                    children: [
+                      ...item.loanList.map(
+                        (e) => Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: SizedBox(
+                              width: 400,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText.bodyText(
+                                      "Instituição: ${item.institution}"),
+                                  AppText.bodyText(
+                                      'Taxa de juros: ${e.tax.toString()}'),
+                                  AppText.bodyText(
+                                      "Valor do emprestimo:  R\$ ${value.toString()}"),
+                                  AppText.bodyText2(
+                                      "${e.installments.toString()} parcelas de R\$ ${e.installmentValue.toString()}"),
+                                  AppText.bodyText("Convênio: ${e.insurance}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
