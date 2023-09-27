@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:zummit/core/theme/app_text.dart';
 
 import '../../../domain/entitites/loan_institution_entity.dart';
@@ -15,6 +16,12 @@ class LoanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String asBrlCurrency(double value) {
+      var formatter = NumberFormat("#,##0.00", "pt_BR");
+      String newText = "R\$ ${formatter.format(value)}";
+      return newText;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const TabTitleWidget(),
@@ -47,9 +54,9 @@ class LoanPage extends StatelessWidget {
                                   AppText.bodyText(
                                       'Taxa de juros: ${e.tax.toString()}'),
                                   AppText.bodyText(
-                                      "Valor do emprestimo:  R\$ ${value.toString()}"),
+                                      "Valor do emprestimo: ${asBrlCurrency(value)}"),
                                   AppText.bodyText2(
-                                      "${e.installments.toString()} parcelas de R\$ ${e.installmentValue.toString()}"),
+                                      "${e.installments.toString()} parcelas de ${asBrlCurrency(e.installmentValue)}"),
                                   AppText.bodyText("Convênio: ${e.insurance}"),
                                 ],
                               ),

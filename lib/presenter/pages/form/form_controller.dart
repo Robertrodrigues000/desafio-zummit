@@ -20,7 +20,14 @@ class FormController extends ChangeNotifier {
   final insuranceListListenable = ValueNotifier<List<InsuranceEntity>>([]);
   final fileListenable = ValueNotifier<File?>(null);
   final formKey = GlobalKey<FormState>();
-  final List<int> installmentsList = <int>[36, 48, 60, 72, 84];
+  final List<String> installmentsList = <String>[
+    "Todas as Parcelas",
+    "36",
+    '48',
+    "60",
+    "72",
+    "84"
+  ];
 
   final institutionListenable = ValueNotifier<List<InstitutionEntity>>([]);
   final insuranceListenable = ValueNotifier<List<InsuranceEntity>>([]);
@@ -78,7 +85,10 @@ class FormController extends ChangeNotifier {
       if (response.isRight) {
         Modular.to.pushNamed(
           '/loan/',
-          arguments: {'loanList': response.right, 'value': _getNumber(valueCtl.text)},
+          arguments: {
+            'loanList': response.right,
+            'value': _getNumber(valueCtl.text)
+          },
         );
       } else {
         SnackbarHelper.error(
@@ -91,8 +101,7 @@ class FormController extends ChangeNotifier {
   }
 
   double _getNumber(String number) {
-    String newNumber = number.replaceAll(RegExp(r','), '.');
-    newNumber = newNumber.replaceAll("R\$", "");
-    return double.parse(newNumber);
+    String newNumber = number.replaceAll(RegExp(r'[^0-9]'), '');
+    return double.parse(newNumber) / 100;
   }
 }

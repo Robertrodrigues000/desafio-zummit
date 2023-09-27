@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 class CurrencyInputFormatter extends TextInputFormatter {
 
+  @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.selection.baseOffset == 0) {

@@ -98,7 +98,7 @@ class _FormPageState extends AppController<FormPage, FormController> {
                         },
                       ),
                       const SizedBox(height: 5),
-                      DropdownButtonFormField<int>(
+                      DropdownButtonFormField<String>(
                         isExpanded: true,
                         icon: const Icon(Icons.arrow_downward),
                         elevation: 16,
@@ -106,13 +106,13 @@ class _FormPageState extends AppController<FormPage, FormController> {
                           contentPadding: EdgeInsets.only(right: 10, left: 10),
                         ),
                         hint: const Text("Parcelas"),
-                        onChanged: (int? value) {
-                          controller.installmentsListenable.value = value!;
+                        onChanged: (String? value) {
+                          controller.installmentsListenable.value = int.tryParse(value!);
                         },
                         items: controller.installmentsList
-                            .map<DropdownMenuItem<int>>(
-                          (int value) {
-                            return DropdownMenuItem<int>(
+                            .map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value.toString()),
                             );
