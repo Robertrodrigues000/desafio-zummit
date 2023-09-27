@@ -1,9 +1,9 @@
 import 'package:either_dart/either.dart';
-import 'package:zummit/domain/entitites/loan_entity.dart';
 
 import '../../infra/repositories/repository.dart';
 import '../entitites/institution_entity.dart';
 import '../entitites/insurance_entity.dart';
+import '../entitites/loan_institution_entity.dart';
 
 class GetSimulationUsecase {
   final Repository _repository;
@@ -12,7 +12,7 @@ class GetSimulationUsecase {
     required Repository repository,
   }) : _repository = repository;
 
-  Future<Either<dynamic, List<LoanEntity>>> call({
+  Future<Either<dynamic, List<LoanInstitutionEntity>>> call({
     List<InstitutionEntity>? institutionList,
     List<InsuranceEntity>? insuranceList,
     int? installment,

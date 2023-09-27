@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:zummit/domain/entitites/loan_entity.dart';
 import 'package:zummit/external/mappers/insurance_mapper.dart';
-import 'package:zummit/external/mappers/loan_mapper.dart';
 
 import '../../domain/entitites/institution_entity.dart';
 import '../../domain/entitites/insurance_entity.dart';
+import '../../domain/entitites/loan_institution_entity.dart';
 import '../../infra/datasource/datasource.dart';
 import '../mappers/institution_mapper.dart';
+import '../mappers/loan_institution_mapper.dart';
 
 class Datasource extends IDatasource {
   String get urlPrefix => 'http://10.0.2.2:8000/api';
@@ -46,7 +46,7 @@ class Datasource extends IDatasource {
   }
 
   @override
-  Future<List<LoanEntity>> simulation({
+  Future<List<LoanInstitutionEntity>> simulation({
     required double value,
     List<InstitutionEntity>? institutionList,
     List<InsuranceEntity>? insuranceList,
@@ -70,8 +70,13 @@ class Datasource extends IDatasource {
 
     var data = jsonDecode(response.body);
 
-    List<LoanEntity> data2 =
-        (data as List).map((item) => LoanMapper.fromMap(item)).toList();
+    List<LoanInstitutionEntity> data2 = []; 
+
+    data.forEach((key, value) {
+      data2.add(LoanInstitutionMapper.fromMap(key,value));
+    });
+
+        // (data as List).map((item) => LoanInstitutionMapper.fromMap(item)).toList();
 
     return data2;
   }

@@ -1,9 +1,9 @@
 import 'package:either_dart/either.dart';
 import 'package:dio/dio.dart';
-import 'package:zummit/domain/entitites/loan_entity.dart';
 
 import '../../domain/entitites/institution_entity.dart';
 import '../../domain/entitites/insurance_entity.dart';
+import '../../domain/entitites/loan_institution_entity.dart';
 import '../../domain/repositories/repository.dart';
 import '../../external/datasource/datasource.dart';
 
@@ -32,14 +32,14 @@ class Repository extends IRepository {
   }
 
   @override
-  Future<Either<Exception, List<LoanEntity>>> simulation({
+  Future<Either<Exception, List<LoanInstitutionEntity>>> simulation({
     List<InstitutionEntity>? institutionList,
     List<InsuranceEntity>? insuranceList,
     int? installment,
     required double value,
   }) async {
     try {
-      List<LoanEntity> response = await _datasource.simulation(
+      List<LoanInstitutionEntity> response = await _datasource.simulation(
     institutionList : institutionList,
      insuranceList: insuranceList,
      installment : installment,
