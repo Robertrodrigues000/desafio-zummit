@@ -61,22 +61,20 @@ class Datasource extends IDatasource {
         "accept": "application/json"
       },
       body: jsonEncode({
-        "valor_emprestimo": 50,
-        "instituicoes":[],
-        "convenios":[],
-        "parcela": 0,
+        "valor_emprestimo": value,
+        "instituicoes": institutionList?.map((e) => e.key).toList(),
+        "convenios": insuranceList?.map((e) => e.key).toList(),
+        "parcela": installment ?? 0,
       }),
     );
 
     var data = jsonDecode(response.body);
 
-    List<LoanInstitutionEntity> data2 = []; 
+    List<LoanInstitutionEntity> data2 = [];
 
     data.forEach((key, value) {
-      data2.add(LoanInstitutionMapper.fromMap(key,value));
+      data2.add(LoanInstitutionMapper.fromMap(key, value));
     });
-
-        // (data as List).map((item) => LoanInstitutionMapper.fromMap(item)).toList();
 
     return data2;
   }
