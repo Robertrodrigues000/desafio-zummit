@@ -22,7 +22,6 @@ class FormController extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
   final List<int> installmentsList = <int>[36, 48, 60, 72, 84];
 
-
   final institutionListenable = ValueNotifier<List<InstitutionEntity>>([]);
   final insuranceListenable = ValueNotifier<List<InsuranceEntity>>([]);
   final installmentsListenable = ValueNotifier<int?>(null);
@@ -67,30 +66,31 @@ class FormController extends ChangeNotifier {
     }
   }
 
- Future<void> getSimulation() async {
-    var response = await _getSimulationUsecase(
-      value: _getNumber(valueCtl.text),
-      installment: installmentsListenable.value,
-      institutionList: institutionListenable.value,
-      insuranceList: insuranceListenable.value,
-    );
-
-    if (response.isRight) {
-      // insuranceListListenable.value = response.right;
-      // insuranceListListenable.notifyListeners();
-    } else {
-      SnackbarHelper.error(
-        message:
-            'Erro ao carregar as informações, favor tentar novamente mais tarde.',
-        context: scaffoldKey.currentContext!,
+  Future<void> getSimulation() async {
+    if (formKey.currentState!.validate()) {
+      var response = await _getSimulationUsecase(
+        value: _getNumber(valueCtl.text),
+        installment: installmentsListenable.value,
+        institutionList: institutionListenable.value,
+        insuranceList: insuranceListenable.value,
       );
+
+      if (response.isRight) {
+        // insuranceListListenable.value = response.right;
+        // insuranceListListenable.notifyListeners();
+      } else {
+        SnackbarHelper.error(
+          message:
+              'Erro ao carregar as informações, favor tentar novamente mais tarde.',
+          context: scaffoldKey.currentContext!,
+        );
+      }
     }
   }
 
-   double _getNumber(String number) {
+  double _getNumber(String number) {
     String newNumber = number.replaceAll(RegExp(r','), '.');
     newNumber = newNumber.replaceAll("R\$", "");
     return double.parse(newNumber);
   }
-
 }

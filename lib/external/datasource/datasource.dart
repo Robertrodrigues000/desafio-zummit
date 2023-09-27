@@ -54,12 +54,19 @@ class Datasource extends IDatasource {
   }) async {
     final uri = Uri.parse('$urlPrefix/simular');
 
-    Response response = await post(uri, body: {
-      "valor_emprestimo": value,
-      "instituicoes": institutionList,
-      "convenios": insuranceList,
-      "parcela": installment,
-    });
+    Response response = await post(
+      uri,
+      headers: {
+        "Content-Type": "application/json",
+        "accept": "application/json"
+      },
+      body: jsonEncode({
+        "valor_emprestimo": 50,
+        "instituicoes":[],
+        "convenios":[],
+        "parcela": 0,
+      }),
+    );
 
     var data = jsonDecode(response.body);
 
